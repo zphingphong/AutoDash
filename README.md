@@ -1,4 +1,0 @@
-AutoDash
-========
-
-Car usage dashboard
