@@ -1,6 +1,5 @@
 Ext.define('AutoDashMobile.controller.Mileage', {
     extend: 'Ext.app.Controller',
-           myname: 'PAN',
     
     config: {
         refs: {

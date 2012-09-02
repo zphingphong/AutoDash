@@ -6,6 +6,5 @@ Ext.application({
     
     launch: function() {
         Ext.create('AutoDashMobile.view.Main');
-                
     }
 });
