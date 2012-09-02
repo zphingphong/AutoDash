@@ -63,7 +63,13 @@ Ext.define ('AutoDashMobile.view.Mileage', {
             displayField: 'date',
             backText: 'Back',
             detailCard: {
-                html: 'You are viewing the detail card!'
+                html: ''
+            },
+            listeners: {
+                leafitemtap: function(nestedList, list, index, target, record) {
+                    var detailCard = nestedList.getDetailCard();
+                    detailCard.setHtml('Date/Time: ' + record.get('date') + '<br /> Start Mileage: ' + record.get('start') + '<br /> End Mileage: ' + record.get('end') + '<br /> Car: ' + record.get('carId') + '<br />');
+                }
             }
         }]
     }

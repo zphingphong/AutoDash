@@ -51,6 +51,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
     },
            
     doView: function() {
+        var mileageView = this.getMileageView();
         this.getMileageScreen().setActiveItem(1);
         DB.transaction(function(tx){
             tx.executeSql('SELECT * FROM Mileages', [], function(tx, result){
@@ -70,9 +71,9 @@ Ext.define('AutoDashMobile.controller.Mileage', {
                     root: rootObj
                 });
                           
-                this.getMileageView().setStore(store);
-            }.bind(this));
-        }.bind(this), this.displayError, this.displayCompleted);
+                mileageView.setStore(store);
+            });
+        }, this.displayError, this.displayCompleted);
     },
            
     doEnter: function() {
