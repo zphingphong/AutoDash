@@ -13,6 +13,7 @@ Ext.application({
                 
     views: ['Main'],
     controllers: ['Mileage'],
+    models: ['Mileage'],
     
     launch: function() {
         Ext.Viewport.add([{

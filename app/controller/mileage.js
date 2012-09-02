@@ -8,7 +8,9 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             enterMileageBtn: '#enterMileage',
             saveBtn: '#saveMileage',
             clearBtn: '#clearMileage',
-            mileageInputForm: '#mileageInputForm'
+            mileageInputForm: '#mileageInputForm',
+            mileageHistoryStore: '#mileageHistoryStore',
+            mileageView: '#mileageView'
         }, 
         
         control: {
@@ -20,10 +22,10 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             },
             viewMileageBtn : {
                 tap: 'doView'
-           },
-           enterMileageBtn : {
+            },
+            enterMileageBtn : {
                tap: 'doEnter'
-           }
+            }
         }
     },
            
@@ -50,6 +52,27 @@ Ext.define('AutoDashMobile.controller.Mileage', {
            
     doView: function() {
         this.getMileageScreen().setActiveItem(1);
+        DB.transaction(function(tx){
+            tx.executeSql('SELECT * FROM Mileages', [], function(tx, result){
+                var rootObj = {};
+                var mileagesArray = [];
+                var length = result.rows.length;
+                for(var i = 0; i < length; i++){
+                    var itm = result.rows.item(i);
+                    itm.leaf = true,
+                    mileagesArray[i] = itm;
+                }
+                rootObj.mileages = mileagesArray;
+                          
+                var store = Ext.create('Ext.data.TreeStore', {
+                    model: 'AutoDashMobile.model.Mileage',
+                    defaultRootProperty: 'mileages',
+                    root: rootObj
+                });
+                          
+                this.getMileageView().setStore(store);
+            }.bind(this));
+        }.bind(this), this.displayError, this.displayCompleted);
     },
            
     doEnter: function() {

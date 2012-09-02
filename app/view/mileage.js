@@ -1,14 +1,3 @@
-Ext.define('MileageListItem', {
-    extend: 'Ext.data.Model',
-    config: {
-        fields: [
-            {name: 'date', type: 'date'},
-            {name: 'endMileage', type: 'int'}
-        ]
-    }
-});
-
-
 Ext.define ('AutoDashMobile.view.Mileage', {
     extend: 'Ext.Carousel',
     xtype: 'mileagescreen',
@@ -64,7 +53,7 @@ Ext.define ('AutoDashMobile.view.Mileage', {
                 xtype: 'datepickerfield',
                 name: 'date',
                 label: 'Date',
-                dateFormat: DATE_FORMAT,
+                dateFormat: 'Y-m-d H:i',
                 value: new Date()
             }]
         }, {
@@ -73,17 +62,6 @@ Ext.define ('AutoDashMobile.view.Mileage', {
             title: 'Mileage History',
             displayField: 'date',
             backText: 'Back',
-            store: Ext.create('Ext.data.TreeStore', {
-                model: 'MileageListItem',
-                defaultRootProperty: 'items',
-                root: {
-                    items: [{
-                        date: new Date(),
-                        endMileage: 234,
-                        leaf: true
-                    }]
-                }
-            }),
             detailCard: {
                 html: 'You are viewing the detail card!'
             }
