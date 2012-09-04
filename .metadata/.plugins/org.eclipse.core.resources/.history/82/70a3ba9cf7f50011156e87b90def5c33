@@ -1,0 +1,6 @@
+<%= netzke :mileages,
+  :class_name => "Netzke::Basepack::GridPanel",
+  :model => "Mileage",
+  :height => 400 %
+  :columns => [:start, :end, :date]
+%>
