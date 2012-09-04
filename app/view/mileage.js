@@ -36,6 +36,10 @@ Ext.define ('AutoDashMobile.view.Mileage', {
                     text: 'Clear',
                     id: 'clearMileage',
                     ui: 'action'
+                }, {
+                    text: 'Upload',
+                    id: 'syncData',
+                    ui: 'action'
                 }]
             }]
         }, {
@@ -43,11 +47,11 @@ Ext.define ('AutoDashMobile.view.Mileage', {
             id: 'mileageInputForm',
             items: [{
                 xtype: 'numberfield',
-                name: 'startMileage',
+                name: 'start',
                 label: 'Start'
             }, {
                 xtype: 'numberfield',
-                name: 'endMileage',
+                name: 'end',
                 label: 'End'
             }, {
                 xtype: 'datepickerfield',

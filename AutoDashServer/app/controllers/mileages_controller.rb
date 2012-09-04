@@ -40,7 +40,9 @@ class MileagesController < ApplicationController
   # POST /mileages
   # POST /mileages.json
   def create
-    @mileage = Mileage.new(params[:mileage])
+    # @mileage = Mileage.new(params[:mileage])
+    
+    @mileage = Mileage.new(:start => params[:start], :end => params[:end], :date => params[:date])
 
     respond_to do |format|
       if @mileage.save
