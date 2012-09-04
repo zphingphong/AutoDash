@@ -1,1 +1,0 @@
-<%= netzke :mileages, :Mileage => "Netzke::Basepack::GridPanel", :model => "Task", :height => 400 %>
