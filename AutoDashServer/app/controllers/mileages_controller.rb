@@ -40,9 +40,9 @@ class MileagesController < ApplicationController
   # POST /mileages
   # POST /mileages.json
   def create
-    # @mileage = Mileage.new(params[:mileage])
+    @mileage = Mileage.new(params[:mileage])
     
-    @mileage = Mileage.new(:start => params[:start], :end => params[:end], :date => params[:date])
+    # @mileage = Mileage.new(:start => params[:start], :end => params[:end], :date => params[:date])
 
     respond_to do |format|
       if @mileage.save
@@ -80,6 +80,19 @@ class MileagesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to mileages_url }
       format.json { head :no_content }
+    end
+  end
+  
+  # POST /sync_mileage.json
+  def sync_mileage
+    data = ActiveSupport::JSON.decode(params[:data])
+    if tmpArray = Array.try_convert(data)
+      mileage = wasSuccess = Mileage.create(tmpArray)
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: mileage, status: :created }
     end
   end
 end

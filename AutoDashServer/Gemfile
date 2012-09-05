@@ -39,3 +39,6 @@ gem 'jquery-rails'
 
 gem 'netzke-core', :git => "git://github.com/nomadcoder/netzke-core.git"
 gem 'netzke-basepack', :git => "git://github.com/nomadcoder/netzke-basepack.git"
+
+gem "ruby-debug-base19x", "0.11.30.pre10"
+gem 'ruby-debug-ide'

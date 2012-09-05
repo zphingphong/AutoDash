@@ -94,34 +94,33 @@ Ext.define('AutoDashMobile.controller.Mileage', {
            
     doSync: function(){
         DB.transaction(function(tx){
-            tx.executeSql('SELECT * FROM Mileages', [], function(tx, result){
-                          var allPhoneMileage = [];          
-                
+            tx.executeSql('SELECT start, end, date FROM Mileages', [], function(tx, result){
+                var allPhoneMileage = [];
                 var length = result.rows.length;
                 for(var i = 0; i < length; i++){
                 var itm = result.rows.item(i);
                     allPhoneMileage[i] = itm;
                 }
                           
-                          console.log(allPhoneMileage);
+            Ext.Ajax.request({
+                url: 'http://192.168.0.40:3000/mileages/sync_mileage.json', //TODO: Use http://70.79.15.18:3000/
+                method: 'POST',
+                headers: {
+                    'X-CSRF-Token': 'meta[name="csrf-token"]' //TODO: Fix this somehow
+                },
+                scope: this,
+                params: {
+                    data: Ext.JSON.encode(allPhoneMileage)
+                },
+                success: function(response) {
+                    console.log(response.responseText);
+                },
+                failure: function(response) {
+                    alert(response.responseText);
+                }
+            });
                           
             }.bind(this), this.displayError, this.displayCompleted);
         }.bind(this));
-           
-//        Ext.Ajax.request({
-//            url: 'http://192.168.0.40:3000/mileages.json', //TODO: Use http://70.79.15.18:3000/
-//            method: 'POST',
-//            headers: {
-//                'X-CSRF-Token': 'meta[name="csrf-token"]' //TODO: Fix this somehow
-//            },
-//            scope: this,
-//            params: this.getMileageInputForm().getValues(),
-//            success: function(response) {
-//                         alert(response.responseText);
-//            },
-//            failure: function(response) {
-//                alert(response.responseText);
-//            }
-//        });
     }
 });
