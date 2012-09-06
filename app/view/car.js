@@ -24,9 +24,6 @@ Ext.define ('AutoDashMobile.view.Car', {
                 id: 'newCar',
                 ui: 'action'
             }, {
-                text: 'Delete',
-                id: 'deleteCar'
-            }, {
                 xtype: 'spacer'
             }, {
                 text: 'Next',

@@ -5,7 +5,10 @@ Ext.define('AutoDashMobile.controller.Car', {
         refs: {
             carScreen: '#carScreen',
             saveBtn: '#saveCar',
+            newBtn: '#newCar',
             clearBtn: '#clearCar',
+            nextBtn: '#nextCar',
+            previousBtn: '#previousCar',
             carInputForm: '#carInputForm'
         }, 
         
@@ -15,6 +18,15 @@ Ext.define('AutoDashMobile.controller.Car', {
             },
             clearBtn: {
                 tap: 'doClear'
+            },
+            newBtn: {
+                tap: 'doNew'
+            },
+            nextBtn: {
+                tap: 'doNext'
+            },
+            previousBtn: {
+                tap: 'doPrevious'
             }
         }
     },
@@ -22,12 +34,13 @@ Ext.define('AutoDashMobile.controller.Car', {
     launch: function(){
            
         var carScreen = this.getCarScreen();
+        var thisController = this;
            
         if(DB == undefined){
             DB = window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
         }
         DB.transaction(function(tx){
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Cars (id INTEGER PRIMARY KEY UNIQUE NOT NULL, license TEXT, name TEXT NOT NULL, current_mileage INTEGER NOT NULL, image BLOB, is_default INTEGER, was_synced INTEGER DEFAULT 0)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Cars (id INTEGER PRIMARY KEY AUTOINCREMENT, license TEXT, name TEXT NOT NULL, current_mileage INTEGER NOT NULL, image BLOB, is_default INTEGER, was_synced INTEGER DEFAULT 0)');
         }, this.displayError);
            
         DB.transaction(function(tx){
@@ -36,100 +49,87 @@ Ext.define('AutoDashMobile.controller.Car', {
                 for(var i = 0; i < length; i++){
                     var itm = result.rows.item(i);
                     var panel = Ext.create('Ext.Panel', {
+                        id: 'car' + itm.id,
                         items: [{
                             xtype: 'panel',
-                            html: itm.name
+                            html: itm.name //TODO: Make it prettier
                         }, {
                             xtype: 'button',
-                            text: 'Make Default',
-                            id: 'setDefaultCar'
+                            text: 'Make Default' //TODO: Make it works
+                        }, {
+                            xtype: 'button',
+                            text: 'Delete',
+                            handler: function() {
+                                var currentCar = carScreen.getActiveItem();
+                                carScreen.remove(currentCar, true);
+                                   
+                                DB.transaction(function(tx){
+                                    tx.executeSql('DELETE FROM Cars WHERE id = ' + currentCar.getId().substring(3));
+                                }, thisController.displayError, thisController.displayCompleted);
+                            }
                         }]
                     });
                     carScreen.insert(i, panel);
                     carScreen.setActiveItem(0);
                 }
-            }, this.displayError, this.displayCompleted);
+            }, thisController.displayError, thisController.displayCompleted);
         });
     },
     
     doSave: function() {
         var formValues = this.getCarInputForm().getValues();
+        var carScreen = this.getCarScreen();
+        var thisController = this;
            
         DB.transaction(function(tx){
-            tx.executeSql('INSERT INTO Cars (license, name, current_mileage, is_default) VALUES ("' + formValues.license + '", "' + formValues.name + '", ' + formValues.current_mileage + ', 1)');
+            tx.executeSql('INSERT INTO Cars (license, name, current_mileage, is_default) VALUES ("' + formValues.license + '", "' + formValues.name + '", ' + formValues.current_mileage + ', 1)', [], function(tx, result){
+                var panel = Ext.create('Ext.Panel', {
+                    id: 'car' + result.insertId,
+                    items: [{
+                        xtype: 'panel',
+                        html: formValues.name //TODO: Make it prettier
+                    }, {
+                        xtype: 'button',
+                        text: 'Make Default'
+                    }, {
+                        xtype: 'button',
+                        text: 'Delete',
+                        handler: function() {
+                            var currentCar = carScreen.getActiveItem();
+                            carScreen.remove(currentCar, true);
+                               
+                            DB.transaction(function(tx){
+                                tx.executeSql('DELETE FROM Cars WHERE id = ' + currentCar.getId().substring(3));
+                            }, thisController.displayError, thisController.displayCompleted);
+                        }
+                    }]
+                });
+                carScreen.insert(0, panel);
+                carScreen.setActiveItem(0);
+            }, this.displayError, this.displayCompleted);
         }, this.displayError, this.displayCompleted);
     },
     
     doClear: function() {
         this.getCarInputForm().reset();
     },
-           
-//    doView: function() {
-//        var mileageView = this.getMileageView();
-//        this.getMileageScreen().setActiveItem(1);
-//        DB.transaction(function(tx){
-//            tx.executeSql('SELECT * FROM Mileages', [], function(tx, result){ //Cannot use the regular retrieve all method because it has to put "leaf = true" to every items.
-//                var rootObj = {};
-//                var mileagesArray = [];
-//                var length = result.rows.length;
-//                for(var i = 0; i < length; i++){
-//                    var itm = result.rows.item(i);
-//                    itm.leaf = true,
-//                    mileagesArray[i] = itm;
-//                }
-//                rootObj.mileages = mileagesArray;
-//                          
-//                var store = Ext.create('Ext.data.TreeStore', {
-//                    model: 'AutoDashMobile.model.Mileage',
-//                    defaultRootProperty: 'mileages',
-//                    root: rootObj
-//                });
-//                          
-//                mileageView.setStore(store);
-//            });
-//        }, this.displayError, this.displayCompleted);
-//    },
-//           
-//    doEnter: function() {
-//        this.getMileageScreen().setActiveItem(0);
-//    },
-//           
+          
     displayError: function(error){
         alert('Failed to access local database: ' + error.message);
     },
 
     displayCompleted: function(){
-    }//,
+    },
            
-//    doSync: function(){
-//        DB.transaction(function(tx){
-//            tx.executeSql('SELECT start, end, date FROM Mileages', [], function(tx, result){
-//                var allPhoneMileage = [];
-//                var length = result.rows.length;
-//                for(var i = 0; i < length; i++){
-//                var itm = result.rows.item(i);
-//                    allPhoneMileage[i] = itm;
-//                }
-//                          
-//            Ext.Ajax.request({
-//                url: 'http://192.168.0.40:3000/mileages/sync_mileage.json', //TODO: Use http://70.79.15.18:3000/
-//                method: 'POST',
-//                headers: {
-//                    'X-CSRF-Token': 'meta[name="csrf-token"]' //TODO: Fix this somehow
-//                },
-//                scope: this,
-//                params: {
-//                    data: Ext.JSON.encode(allPhoneMileage)
-//                },
-//                success: function(response) {
-//                    console.log(response.responseText);
-//                },
-//                failure: function(response) {
-//                    alert(response.responseText);
-//                }
-//            });
-//                          
-//            }.bind(this), this.displayError, this.displayCompleted);
-//        }.bind(this));
-//    }
+    doNew: function() {
+        this.getCarScreen().setActiveItem(this.getCarInputForm());
+    },
+           
+    doNext: function() {
+        this.getCarScreen().next();
+    },
+           
+    doPrevious: function() {
+        this.getCarScreen().previous();
+    }
 });

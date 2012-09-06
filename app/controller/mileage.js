@@ -39,7 +39,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             DB = window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
         }
         DB.transaction(function(tx){
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY UNIQUE NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER NOT NULL, destination TEXT, purpose TEXT, was_synced INTEGER DEFAULT 0, FOREIGN KEY(car_id) REFERENCES Cars(id))'); //TODO: Figure out why FOREIGN KEY doesn't do the validation
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY AUTOINCREMENT, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER NOT NULL, destination TEXT, purpose TEXT, was_synced INTEGER DEFAULT 0, FOREIGN KEY(car_id) REFERENCES Cars(id))'); //TODO: Figure out why FOREIGN KEY doesn't do the validation
         }, this.displayError);
     },
     
@@ -93,7 +93,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
     displayCompleted: function(){
     },
            
-    doSync: function(){
+    doSync: function(){ //TODO: this should be global
         DB.transaction(function(tx){
             tx.executeSql('SELECT start, end, date FROM Mileages', [], function(tx, result){
                 var allPhoneMileage = [];
