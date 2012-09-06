@@ -87,8 +87,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
     },
            
     displayError: function(error){
-        alert('Failed to access local Database');
-        console.log(error.message);
+        alert('Failed to access local database: ' + error.message);
     },
 
     displayCompleted: function(){

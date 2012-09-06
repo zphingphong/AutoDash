@@ -3,6 +3,7 @@ Ext.define('AutoDashMobile.controller.Car', {
     
     config: {
         refs: {
+            carScreen: '#carScreen',
             saveBtn: '#saveCar',
             clearBtn: '#clearCar',
             carInputForm: '#carInputForm'
@@ -18,13 +19,37 @@ Ext.define('AutoDashMobile.controller.Car', {
         }
     },
            
-    init: function(){
+    launch: function(){
+           
+        var carScreen = this.getCarScreen();
+           
         if(DB == undefined){
             DB = window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
         }
         DB.transaction(function(tx){
             tx.executeSql('CREATE TABLE IF NOT EXISTS Cars (id INTEGER PRIMARY KEY UNIQUE NOT NULL, license TEXT, name TEXT NOT NULL, current_mileage INTEGER NOT NULL, image BLOB, is_default INTEGER, was_synced INTEGER DEFAULT 0)');
         }, this.displayError);
+           
+        DB.transaction(function(tx){
+            tx.executeSql('SELECT * FROM Cars', [], function(tx, result){
+                var length = result.rows.length;
+                for(var i = 0; i < length; i++){
+                    var itm = result.rows.item(i);
+                    var panel = Ext.create('Ext.Panel', {
+                        items: [{
+                            xtype: 'panel',
+                            html: itm.name
+                        }, {
+                            xtype: 'button',
+                            text: 'Make Default',
+                            id: 'setDefaultCar'
+                        }]
+                    });
+                    carScreen.insert(i, panel);
+                    carScreen.setActiveItem(0);
+                }
+            }, this.displayError, this.displayCompleted);
+        });
     },
     
     doSave: function() {
@@ -37,7 +62,7 @@ Ext.define('AutoDashMobile.controller.Car', {
     
     doClear: function() {
         this.getCarInputForm().reset();
-    }//,
+    },
            
 //    doView: function() {
 //        var mileageView = this.getMileageView();
@@ -69,13 +94,13 @@ Ext.define('AutoDashMobile.controller.Car', {
 //        this.getMileageScreen().setActiveItem(0);
 //    },
 //           
-//    displayError: function(error){
-//        alert('Failed to access local Database');
-//    },
-//
-//    displayCompleted: function(){
-//    },
-//           
+    displayError: function(error){
+        alert('Failed to access local database: ' + error.message);
+    },
+
+    displayCompleted: function(){
+    }//,
+           
 //    doSync: function(){
 //        DB.transaction(function(tx){
 //            tx.executeSql('SELECT start, end, date FROM Mileages', [], function(tx, result){

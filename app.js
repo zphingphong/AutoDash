@@ -1,7 +1,7 @@
 // global final variables
 var DB;
 var DB_NAME = 'AutoDash'; 
-var DB_VERSION = '3.6.12';  
+var DB_VERSION = '1.0';  
 var DB_DISPLAY_NAME = 'Auto Dash'; 
 var DB_SIZE = 65535; 
 

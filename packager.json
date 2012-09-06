@@ -14,6 +14,12 @@
 	"applicationId":"com.mycompany.myAppID",
 
 	/**
+	 * @cfg {String} bundleSeedId
+	 * A ten character string which stands before aplication ID in Apple Provisioning Portal
+	 */
+	"bundleSeedId":"KPXFEPZ6EF",
+
+	/**
 	 * @cfg {String} versionString
 	 * @required
 	 * This is the version of your application.
@@ -30,14 +36,14 @@
 	 * For Android, please refer to the Google Launcher icons guide:
 	 * http://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html
 	 */
-	"iconName":"resources/icons/Icon~ipad.png",
+	"iconName":"icon.png",
 
 	/**
 	 * @cfg {String} inputPath
 	 * @required
 	 * This is location of your Sencha Touch 2 application, relative to this configuration file.
 	 */
-	"inputPath":"build/native",
+	"inputPath":"./",
 
 	/**
 	 * @cfg {String} outputPath
@@ -98,22 +104,22 @@
 	 * When using a certificatePath on Windows, you do not need to specify this.
 	 */
 	"certificateAlias":"",
-	
 	/**
 	 * @cfg {String} sdkPath
 	 * This is the path to the Android SDK, if you are developing an Android application.
 	 */
 	"sdkPath":"/path/to/android-sdk",
-	
+
 	/**
-	 * @cfg  androidAPILevel
+	/**
+	 * @cfg {String} androidAPILevel
 	 * This is android API level, the version of Android SDK to use, you can read more about it here: http://developer.android.com/guide/appendix/api-levels.html.
 	 * Be sure to install corresponding platform API in android SDK manager (android_sdk/tools/android)
 	 */
-	"androidAPILevel":"15",
+	"androidAPILevel":"7",
 
 	/**
-	 * @cfg  orientations
+	 * @cfg {Array[String]} orientations
 	 * @required
 	 * This is orientations that this application can run.
 	 */
