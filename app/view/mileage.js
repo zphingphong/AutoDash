@@ -46,6 +46,10 @@ Ext.define ('AutoDashMobile.view.Mileage', {
             xtype: 'formpanel',
             id: 'mileageInputForm',
             items: [{
+//                xtype: 'numberfield', //TODO: Change this to dropdown
+//                name: 'car_id',
+//                label: 'Car'
+//            }, {
                 xtype: 'numberfield',
                 name: 'start',
                 label: 'Start'
@@ -59,6 +63,14 @@ Ext.define ('AutoDashMobile.view.Mileage', {
                 label: 'Date',
                 dateFormat: 'Y-m-d H:i',
                 value: new Date()
+            }, {
+                xtype: 'textfield',
+                name: 'destination',
+                label: 'Destination'
+            }, {
+                xtype: 'textfield',
+                name: 'purpose',
+                label: 'Purpose'
             }]
         }, {
             xtype: 'nestedlist',
@@ -72,7 +84,7 @@ Ext.define ('AutoDashMobile.view.Mileage', {
             listeners: {
                 leafitemtap: function(nestedList, list, index, target, record) {
                     var detailCard = nestedList.getDetailCard();
-                    detailCard.setHtml('Date/Time: ' + record.get('date') + '<br /> Start Mileage: ' + record.get('start') + '<br /> End Mileage: ' + record.get('end') + '<br /> Car: ' + record.get('carId') + '<br />');
+                    detailCard.setHtml('Date/Time: ' + record.get('date') + '<br /> Start Mileage: ' + record.get('start') + '<br /> End Mileage: ' + record.get('end') + '<br /> Destination: ' + record.get('destination') + '<br /> Purpose: ' + record.get('purpose'));
                 }
             }
         }]

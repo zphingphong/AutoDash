@@ -39,7 +39,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             DB = window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
         }
         DB.transaction(function(tx){
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY UNIQUE NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, carId INTEGER)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY UNIQUE NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER, destination TEXT, purpose TEXT)');
         }, this.displayError);
     },
     
@@ -48,7 +48,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
         var dateStr = Ext.Date.format(formValues.date, DATE_FORMAT);
            
         DB.transaction(function(tx){
-            tx.executeSql('INSERT INTO Mileages (start, end, date, carId) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", 1)');
+            tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", 0, "' + formValues.destination + '", "' + formValues.purpose + '")');
         }, this.displayError, this.displayCompleted);
     },
     
@@ -59,7 +59,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
         var mileageView = this.getMileageView();
         this.getMileageScreen().setActiveItem(1);
         DB.transaction(function(tx){
-            tx.executeSql('SELECT * FROM Mileages', [], function(tx, result){ //Cannot use the reguar retrieve all method because it has to put "leaf = true" to every items.
+            tx.executeSql('SELECT * FROM Mileages', [], function(tx, result){ //Cannot use the regular retrieve all method because it has to put "leaf = true" to every items.
                 var rootObj = {};
                 var mileagesArray = [];
                 var length = result.rows.length;
