@@ -39,7 +39,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             DB = window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
         }
         DB.transaction(function(tx){
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY UNIQUE NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER, destination TEXT, purpose TEXT, was_synced INTEGER DEFAULT 0)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY UNIQUE NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER NOT NULL, destination TEXT, purpose TEXT, was_synced INTEGER DEFAULT 0, FOREIGN KEY(car_id) REFERENCES Cars(id))'); //TODO: Figure out why FOREIGN KEY doesn't do the validation
         }, this.displayError);
     },
     
@@ -48,11 +48,12 @@ Ext.define('AutoDashMobile.controller.Mileage', {
         var dateStr = Ext.Date.format(formValues.date, DATE_FORMAT);
            
         DB.transaction(function(tx){
-            tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", 0, "' + formValues.destination + '", "' + formValues.purpose + '")');
+            tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", 1, "' + formValues.destination + '", "' + formValues.purpose + '")'); //TODO: Fix car id
         }, this.displayError, this.displayCompleted);
     },
     
     doClear: function() {
+        this.getMileageInputForm().reset();
     },
            
     doView: function() {
@@ -87,6 +88,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
            
     displayError: function(error){
         alert('Failed to access local Database');
+        console.log(error.message);
     },
 
     displayCompleted: function(){

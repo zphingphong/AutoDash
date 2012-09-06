@@ -3,12 +3,8 @@ Ext.define ('AutoDashMobile.view.Car', {
     xtype: 'carcreen',
     
     requires: [
-//        'AutoDashMobile.controller.Car'
+        'AutoDashMobile.controller.Car'
     ],
-            
-            constructor: function(config){
-            this.callParent(arguments);
-            },
     
     config: {
         title: 'Car',
@@ -39,8 +35,13 @@ Ext.define ('AutoDashMobile.view.Car', {
             }]
         }, {
             xtype: 'formpanel',
-            id: 'carInputForm', //TODO: add image
+            id: 'carInputForm', //TODO: add image, and default checkbox
             items: [{
+                text: 'Clear',
+                xtype: 'button',
+                id: 'clearCar',
+                ui: 'action'
+            }, {
                 xtype: 'textfield',
                 name: 'license',
                 label: 'License'
@@ -52,6 +53,11 @@ Ext.define ('AutoDashMobile.view.Car', {
                 xtype: 'numberfield',
                 name: 'current_mileage',
                 label: 'Mileage'
+            }, {
+                text: 'Save',
+                xtype: 'button',
+                id: 'saveCar',
+                ui: 'action'
             }]
         }]
     }

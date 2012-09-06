@@ -26,26 +26,19 @@ Ext.define ('AutoDashMobile.view.Mileage', {
             }, {
                 xtype: 'spacer'
             }, {
-                xtype: 'segmentedbutton',
-                id: 'mySegBtn',
-                items: [{
-                    text: 'Save',
-                    id: 'saveMileage',
-                    ui: 'action'
-                }, {
-                    text: 'Clear',
-                    id: 'clearMileage',
-                    ui: 'action'
-                }, {
-                    text: 'Upload',
-                    id: 'syncData',
-                    ui: 'action'
-                }]
+                text: 'Sync',
+                id: 'syncData',
+                ui: 'action'
             }]
         }, {
             xtype: 'formpanel',
             id: 'mileageInputForm',
             items: [{
+                text: 'Clear',
+                xtype: 'button',
+                id: 'clearMileage',
+                ui: 'action'
+            }, {
 //                xtype: 'numberfield', //TODO: Change this to dropdown
 //                name: 'car_id',
 //                label: 'Car'
@@ -71,6 +64,11 @@ Ext.define ('AutoDashMobile.view.Mileage', {
                 xtype: 'textfield',
                 name: 'purpose',
                 label: 'Purpose'
+            }, {
+                text: 'Save',
+                xtype: 'button',
+                id: 'saveMileage',
+                ui: 'action'
             }]
         }, {
             xtype: 'nestedlist',
