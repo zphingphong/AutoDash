@@ -39,7 +39,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             DB = window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
         }
         DB.transaction(function(tx){
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY UNIQUE NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER, destination TEXT, purpose TEXT)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY UNIQUE NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER, destination TEXT, purpose TEXT, was_synced INTEGER DEFAULT 0)');
         }, this.displayError);
     },
     

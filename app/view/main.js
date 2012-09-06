@@ -3,13 +3,17 @@ Ext.define ('AutoDashMobile.view.Main', {
     xtype: 'mainscreen',
     
     requires: [
-        'AutoDashMobile.view.Mileage'
+        'AutoDashMobile.view.Mileage',
+        'AutoDashMobile.view.Car'
     ],
     
     config: {
         fullscreen: true,
         tabBarPosition: 'bottom',
         items: [{
+            xtype: 'carcreen',
+            id: 'carScreen'
+        }, {
             xtype: 'mileagescreen',
             id: 'mileageScreen'
         }, {

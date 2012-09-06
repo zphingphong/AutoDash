@@ -8,7 +8,7 @@ Ext.define ('AutoDashMobile.view.Mileage', {
     
     config: {
         title: 'Mileage',
-        iconCls: 'home',
+        iconCls: 'action',
         items: [{
             docked: 'top',
             xtype: 'toolbar',
