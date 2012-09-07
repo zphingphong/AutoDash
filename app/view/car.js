@@ -10,6 +10,7 @@ Ext.define ('AutoDashMobile.view.Car', {
         title: 'Car',
         iconCls: 'car',
         ui: 'dark',
+        indicator: false,
         items: [{
             docked: 'top',
             xtype: 'toolbar',

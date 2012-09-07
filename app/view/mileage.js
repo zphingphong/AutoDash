@@ -10,6 +10,7 @@ Ext.define ('AutoDashMobile.view.Mileage', {
         title: 'Mileage',
         iconCls: 'speedometer1',
         ui: 'dark',
+        indicator: false,
         items: [{
             docked: 'top',
             xtype: 'toolbar',
@@ -53,10 +54,14 @@ Ext.define ('AutoDashMobile.view.Mileage', {
                 iconCls: 'doc_black_landscape',
                 margin: '0 0 10 0'
             }, {
-//                xtype: 'numberfield', //TODO: Change this to dropdown
-//                name: 'car_id',
-//                label: 'Car'
-//            }, {
+                xtype: 'selectfield',
+                id: 'carSelectionField',
+                name: 'car_id',
+                label: 'Car',
+                displayField: 'name',
+                valueField: 'id',
+                usePicker: false
+            }, {
                 xtype: 'numberfield',
                 name: 'start',
                 label: 'Start'

@@ -64,6 +64,10 @@ Ext.define('AutoDashMobile.controller.Car', {
                     );
                     var panel = Ext.create('Ext.Panel', {
                         id: 'car' + itm.id,
+                        scrollable: {
+                            direction: 'vertical',
+                            directionLock: true
+                        },
                         items: [{
                             xtype: 'image',
                             width: IMAGE_DIMENSION,
@@ -86,7 +90,7 @@ Ext.define('AutoDashMobile.controller.Car', {
                             iconMask: true,
                             iconCls: 'trash',
                             ui: 'red',
-                            margin: '10 0 0 0',
+                            margin: '10 0 10 0',
                             handler: function() {
                                 var currentCar = carScreen.getActiveItem();
                                 carScreen.remove(currentCar, true);
@@ -113,6 +117,10 @@ Ext.define('AutoDashMobile.controller.Car', {
                 var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="car-info">[License] ' + formValues.license + '</div> <div class="car-info">[Starting Mileage] ' + formValues.current_mileage + '</div>'; //TODO: Change this to current mileage. Collects data everytimes it's added.
                 var panel = Ext.create('Ext.Panel', {
                     id: 'car' + result.insertId,
+                    scrollable: {
+                        direction: 'vertical',
+                        directionLock: true
+                    },
                     items: [{
                         xtype: 'image',
                         width: IMAGE_DIMENSION,
@@ -134,7 +142,7 @@ Ext.define('AutoDashMobile.controller.Car', {
                         iconMask: true,
                         iconCls: 'trash',
                         ui: 'red',
-                        margin: '10 0 0 0',
+                        margin: '10 0 10 0',
                         handler: function() {
                             var currentCar = carScreen.getActiveItem();
                             carScreen.remove(currentCar, true);
@@ -147,12 +155,14 @@ Ext.define('AutoDashMobile.controller.Car', {
                 });
                 carScreen.insert(0, panel);
                 carScreen.setActiveItem(0);
+                thisController.doClear();
             }, this.displayError, this.displayCompleted);
         }, this.displayError, this.displayCompleted);
     },
     
     doClear: function() {
         this.getCarInputForm().reset();
+        this.getCarImage().setSrc(BLANK_IMAGE);
     },
           
     displayError: function(error){
