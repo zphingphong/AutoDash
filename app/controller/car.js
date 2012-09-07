@@ -156,6 +156,7 @@ Ext.define('AutoDashMobile.controller.Car', {
                 carScreen.insert(0, panel);
                 carScreen.setActiveItem(0);
                 thisController.doClear();
+                carScreen.fireEvent('newCarAdded');
             }, this.displayError, this.displayCompleted);
         }, this.displayError, this.displayCompleted);
     },

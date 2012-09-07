@@ -31,32 +31,19 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             },
             enterMileageBtn : {
                tap: 'doEnter'
-            }
+            },
+            '#carScreen' : {
+               newCarAdded: 'updateCarList'
+            },
            
         }
     },
            
     launch: function(){
-           var thisController = this;
         if(DB == undefined){
             DB = window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
         }
-        DB.transaction(function(tx){
-            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY AUTOINCREMENT, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER NOT NULL, destination TEXT, purpose TEXT, was_synced INTEGER DEFAULT 0, FOREIGN KEY(car_id) REFERENCES Cars(id))'); //TODO: Figure out why FOREIGN KEY doesn't do the validation
-            //Build Car list
-            tx.executeSql('SELECT * FROM Cars', [], function(tx, result){ //TODO: Need to make sure that Cars table exists
-                var carArray = [];
-                for(var i = 0; i < result.rows.length; i++){
-                    var itm = result.rows.item(i);
-                    carArray[i] = itm;
-                }
-                var carStore = Ext.create('Ext.data.Store', {
-                    model: 'AutoDashMobile.model.Car',
-                    data: carArray
-                });
-                thisController.getCarSelectionField().setStore(carStore);
-            });
-        }, this.displayError);
+        this.updateCarList();
     },
     
     doSave: function() {
@@ -67,7 +54,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
         var mileageSegBtn = this.getMileageSegBtn();
            
         DB.transaction(function(tx){
-            tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", 1, "' + formValues.destination + '", "' + formValues.purpose + '")', [], function(tx, result){
+            tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", ' + formValues.car_id + ', "' + formValues.destination + '", "' + formValues.purpose + '")', [], function(tx, result){
                 thisController.doView();
                 mileageSegBtn.setPressedButtons([viewBtn]);
             }); //TODO: Fix car id
@@ -145,5 +132,25 @@ Ext.define('AutoDashMobile.controller.Mileage', {
                           
             }.bind(this), this.displayError, this.displayCompleted);
         }.bind(this));
+    },
+           
+    updateCarList: function(){
+        var thisController = this;
+        DB.transaction(function(tx){
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Mileages (id INTEGER PRIMARY KEY AUTOINCREMENT, start INTEGER NOT NULL, end INTEGER NOT NULL, date TEXT NOT NULL, car_id INTEGER NOT NULL, destination TEXT, purpose TEXT, was_synced INTEGER DEFAULT 0, FOREIGN KEY(car_id) REFERENCES Cars(id))'); //TODO: Figure out why FOREIGN KEY doesn't do the validation
+            //Build Car list
+            tx.executeSql('SELECT * FROM Cars', [], function(tx, result){ //TODO: Need to make sure that Cars table exists
+                var carArray = [];
+                for(var i = 0; i < result.rows.length; i++){
+                    var itm = result.rows.item(i);
+                    carArray[i] = itm;
+                }
+                var carStore = Ext.create('Ext.data.Store', {
+                    model: 'AutoDashMobile.model.Car',
+                    data: carArray
+                });
+                thisController.getCarSelectionField().setStore(carStore);
+            });
+        }, this.displayError);
     }
 });
