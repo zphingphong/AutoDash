@@ -61,7 +61,12 @@ Ext.define('AutoDashMobile.controller.Car', {
            
         DB.transaction(function(tx){
             tx.executeSql('INSERT INTO Cars (license, name, current_mileage, image, is_default) VALUES ("' + formValues.license + '", "' + formValues.name + '", ' + formValues.current_mileage + ', "' + thisController.getCarImage().getSrc() + '", 1)', [], function(tx, result){
-                var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="info-field">[License] <span class="value-field">' + formValues.license + '</span></div> <div class="info-field">[Current Mileage] <span class="value-field">' + formValues.current_mileage + '</span></div>';
+                var carTpl = new Ext.XTemplate(
+                    '<div class="car-name">{name}</div>',
+                    '<div class="info-field">[License] <span class="value-field">{license}</span></div>',
+                    '<div class="info-field">[Current Mileage] <span class="value-field">{current_mileage}</span></div>' //TODO: Change this to current mileage. Collects data everytimes it's added.
+                );
+//                var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="info-field">[License] <span class="value-field">' + formValues.license + '</span></div> <div class="info-field">[Current Mileage] <span class="value-field">' + formValues.current_mileage + '</span></div>';
                 var panel = Ext.create('Ext.Panel', {
                     id: 'car' + result.insertId,
                     scrollable: {
@@ -76,7 +81,10 @@ Ext.define('AutoDashMobile.controller.Car', {
                         src: thisController.getCarImage().getSrc()
                     }, {
                         xtype: 'panel',
-                        html: carHtml
+                        data: formValues,
+//                        html: carHtml
+                        itemId: 'carInfoPanel',
+                        tpl: carTpl
                     }, {
                         xtype: 'button',
                         text: 'Make Default',
@@ -100,6 +108,8 @@ Ext.define('AutoDashMobile.controller.Car', {
                         }
                     }]
                 });
+                var carInfoPanel = panel.getComponent('carInfoPanel');
+                carInfoPanel.setHtml(carInfoPanel.getTpl().apply(formValues));
                 carScreen.insert(0, panel);
                 carScreen.setActiveItem(0);
                 thisController.doClear();
@@ -201,7 +211,7 @@ Ext.define('AutoDashMobile.controller.Car', {
                             xtype: 'panel',
                             data: itm,
                             itemId: 'carInfoPanel',
-                            tpl: carTpl //TODO: Make it prettier
+                            tpl: carTpl
                         }, {
                             xtype: 'button',
                             text: 'Make Default', //TODO: Make it works
