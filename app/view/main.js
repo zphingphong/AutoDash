@@ -10,6 +10,7 @@ Ext.define ('AutoDashMobile.view.Main', {
     config: {
         fullscreen: true,
         tabBarPosition: 'bottom',
+        ui: 'dark',
         items: [{
             xtype: 'carcreen',
             id: 'carScreen'
@@ -18,6 +19,7 @@ Ext.define ('AutoDashMobile.view.Main', {
             id: 'mileageScreen'
         }, {
             title: 'Gas',
+            iconCls: 'gas',
             html: '//TODO: Fill this page'
         }]
     }

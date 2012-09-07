@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7901735715F94F1C00FC3C92 /* styles in Resources */ = {isa = PBXBuildFile; fileRef = 7901735615F94F1C00FC3C92 /* styles */; };
 		7941596215F31EB30072E483 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7941596115F31EB30072E483 /* Foundation.framework */; };
 		7941596415F31EB30072E483 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7941596315F31EB30072E483 /* UIKit.framework */; };
 		7941596615F31EB30072E483 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7941596515F31EB30072E483 /* CoreGraphics.framework */; };
@@ -41,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7901735615F94F1C00FC3C92 /* styles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = styles; path = ../../styles; sourceTree = "<group>"; };
 		7941595D15F31EB30072E483 /* AutoDashMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoDashMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7941596115F31EB30072E483 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		7941596315F31EB30072E483 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -117,6 +119,7 @@
 		7941594F15F31EB30072E483 = {
 			isa = PBXGroup;
 			children = (
+				7901735615F94F1C00FC3C92 /* styles */,
 				794159BA15F327EF0072E483 /* app */,
 				794159B815F31F0C0072E483 /* www */,
 				7941597B15F31EB30072E483 /* AutoDashMobile */,
@@ -334,6 +337,7 @@
 				794159A615F31EB30072E483 /* Cordova.plist in Resources */,
 				794159AF15F31EB30072E483 /* MainViewController.xib in Resources */,
 				794159B915F31F0C0072E483 /* www in Resources */,
+				7901735715F94F1C00FC3C92 /* styles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,27 +8,31 @@ Ext.define ('AutoDashMobile.view.Car', {
     
     config: {
         title: 'Car',
-        iconCls: 'home',
+        iconCls: 'car',
+        ui: 'dark',
         items: [{
             docked: 'top',
             xtype: 'toolbar',
-            ui: 'neutral',
             items: [{
-                text: 'Previous',
                 id: 'previousCar',
-                ui: 'back'
+                ui: 'back white',
+                iconMask: true,
+                iconCls: 'arrow_left'
             }, {
                 xtype: 'spacer'
             }, {
-                text: 'New',
+                text: 'Add',
                 id: 'newCar',
-                ui: 'action'
+                ui: 'green',
+                iconMask: true,
+                iconCls: 'add'
             }, {
                 xtype: 'spacer'
             }, {
-                text: 'Next',
                 id: 'nextCar',
-                ui: 'forward'
+                ui: 'forward white',
+                iconMask: true,
+                iconCls: 'arrow_right'
             }]
         }, {
             xtype: 'formpanel',
@@ -37,7 +41,10 @@ Ext.define ('AutoDashMobile.view.Car', {
                 text: 'Clear',
                 xtype: 'button',
                 id: 'clearCar',
-                ui: 'action'
+                ui: 'white',
+                iconMask: true,
+                iconCls: 'doc_black_landscape',
+                margin: '0 0 10 0'
             }, {
                 xtype: 'textfield',
                 name: 'license',
@@ -54,7 +61,10 @@ Ext.define ('AutoDashMobile.view.Car', {
                 text: 'Save',
                 xtype: 'button',
                 id: 'saveCar',
-                ui: 'action'
+                ui: 'lightblue',
+                iconMask: true,
+                iconCls: 'save',
+                margin: '10 0 0 0'
             }]
         }]
     }

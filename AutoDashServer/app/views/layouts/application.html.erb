@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Auto Dash</title>
+	<title>Auto Dash</title>
+  <%= stylesheet_link_tag :application %>
   <%= netzke_init %>
-  <style type="text/css" media="screen">
-    h1 { text-align: center; margin: 10px;}
-    .netzke-component { width: 700px; margin: auto; }
-  </style>
+  <%= javascript_include_tag :application -%>
 
   <%= csrf_meta_tags %>
 </head>

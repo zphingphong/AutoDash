@@ -60,7 +60,7 @@
      */
     "css": [
         {
-            "path": "resources/css/app.css",
+            "path": "resources/css/default-theme.css",
             "update": "delta"
         }
     ],

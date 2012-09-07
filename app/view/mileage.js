@@ -8,27 +8,37 @@ Ext.define ('AutoDashMobile.view.Mileage', {
     
     config: {
         title: 'Mileage',
-        iconCls: 'action',
+        iconCls: 'speedometer1',
+        ui: 'dark',
         items: [{
             docked: 'top',
             xtype: 'toolbar',
-            ui: 'neutral',
             items: [{
                 xtype: 'segmentedbutton',
+                id: 'mileageSegBtn',
+                ui: 'light',
                 items: [{
                     text: 'Enter',
                     id: 'enterMileage',
-                    pressed: true
+                    pressed: true,
+                    iconMask: true,
+                    iconCls: 'compose',
+                    ui: 'action'
                 }, {
                     text: 'View',
-                    id: 'viewMileage'
+                    id: 'viewMileage',
+                    iconMask: true,
+                    iconCls: 'look',
+                    ui: 'action'
                 }]
             }, {
                 xtype: 'spacer'
             }, {
                 text: 'Sync',
                 id: 'syncData',
-                ui: 'action'
+                ui: 'orange',
+                iconMask: true,
+                iconCls: 'sync'
             }]
         }, {
             xtype: 'formpanel',
@@ -37,7 +47,10 @@ Ext.define ('AutoDashMobile.view.Mileage', {
                 text: 'Clear',
                 xtype: 'button',
                 id: 'clearMileage',
-                ui: 'action'
+                ui: 'white',
+                iconMask: true,
+                iconCls: 'doc_black_landscape',
+                margin: '0 0 10 0'
             }, {
 //                xtype: 'numberfield', //TODO: Change this to dropdown
 //                name: 'car_id',
@@ -68,14 +81,19 @@ Ext.define ('AutoDashMobile.view.Mileage', {
                 text: 'Save',
                 xtype: 'button',
                 id: 'saveMileage',
-                ui: 'action'
+                ui: 'lightblue',
+                iconMask: true,
+                iconCls: 'save',
+                margin: '10 0 0 0'
             }]
         }, {
             xtype: 'nestedlist',
             id: 'mileageView',
-            title: 'Mileage History',
             displayField: 'date',
-            backText: 'Back',
+            title: 'Mileage History',
+            backButton: {
+                ui: 'back'
+            },
             detailCard: {
                 html: ''
             },

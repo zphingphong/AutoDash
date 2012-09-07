@@ -11,7 +11,8 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             syncDataBtn: '#syncData',
             mileageInputForm: '#mileageInputForm',
             mileageHistoryStore: '#mileageHistoryStore',
-            mileageView: '#mileageView'
+            mileageView: '#mileageView',
+            mileageSegBtn: '#mileageSegBtn'
         }, 
         
         control: {
@@ -46,9 +47,15 @@ Ext.define('AutoDashMobile.controller.Mileage', {
     doSave: function() {
         var formValues = this.getMileageInputForm().getValues();
         var dateStr = Ext.Date.format(formValues.date, DATE_FORMAT);
+        var thisController = this;
+        var viewBtn = this.getViewMileageBtn();
+        var mileageSegBtn = this.getMileageSegBtn();
            
         DB.transaction(function(tx){
-            tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", 1, "' + formValues.destination + '", "' + formValues.purpose + '")'); //TODO: Fix car id
+            tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", 1, "' + formValues.destination + '", "' + formValues.purpose + '")', [], function(){
+                thisController.doView();
+                mileageSegBtn.setPressedButtons([viewBtn]);
+            }); //TODO: Fix car id
         }, this.displayError, this.displayCompleted);
     },
     

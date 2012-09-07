@@ -55,10 +55,17 @@ Ext.define('AutoDashMobile.controller.Car', {
                             html: itm.name //TODO: Make it prettier
                         }, {
                             xtype: 'button',
-                            text: 'Make Default' //TODO: Make it works
+                            text: 'Make Default', //TODO: Make it works
+                            iconMask: true,
+                            iconCls: 'star',
+                            margin: '10 0 0 0'
                         }, {
                             xtype: 'button',
                             text: 'Delete',
+                            iconMask: true,
+                            iconCls: 'trash',
+                            ui: 'red',
+                            margin: '10 0 0 0',
                             handler: function() {
                                 var currentCar = carScreen.getActiveItem();
                                 carScreen.remove(currentCar, true);
@@ -90,10 +97,17 @@ Ext.define('AutoDashMobile.controller.Car', {
                         html: formValues.name //TODO: Make it prettier
                     }, {
                         xtype: 'button',
-                        text: 'Make Default'
+                        text: 'Make Default',
+                        iconMask: true,
+                        iconCls: 'star',
+                        margin: '10 0 0 0'
                     }, {
                         xtype: 'button',
                         text: 'Delete',
+                        iconMask: true,
+                        iconCls: 'trash',
+                        ui: 'red',
+                        margin: '10 0 0 0',
                         handler: function() {
                             var currentCar = carScreen.getActiveItem();
                             carScreen.remove(currentCar, true);
