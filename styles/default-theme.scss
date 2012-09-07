@@ -28,6 +28,8 @@ $base-gradient: 'glossy';
 @include pictos-iconmask('look');
 @include pictos-iconmask('sync');
 @include pictos-iconmask('speedometer1');
+@include pictos-iconmask('photo1');
+@include pictos-iconmask('photos2');
 
 @include sencha-button-ui('green', green, 'glossy');
 @include sencha-button-ui('white', #f6f6f6, 'glossy');

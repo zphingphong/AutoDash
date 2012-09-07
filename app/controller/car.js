@@ -9,7 +9,10 @@ Ext.define('AutoDashMobile.controller.Car', {
             clearBtn: '#clearCar',
             nextBtn: '#nextCar',
             previousBtn: '#previousCar',
-            carInputForm: '#carInputForm'
+            carInputForm: '#carInputForm',
+            carImage: '#carImage',
+            takePhotoCarBtn: '#takePhotoCar',
+            selectPhotoCarBtn: '#selectPhotoCar'
         }, 
         
         control: {
@@ -27,6 +30,12 @@ Ext.define('AutoDashMobile.controller.Car', {
             },
             previousBtn: {
                 tap: 'doPrevious'
+            },
+            takePhotoCarBtn: {
+                tap: 'doTakePhoto'
+            },
+            selectPhotoCarBtn: {
+                tap: 'doSelectPhoto'
             }
         }
     },
@@ -145,5 +154,55 @@ Ext.define('AutoDashMobile.controller.Car', {
            
     doPrevious: function() {
         this.getCarScreen().previous();
+    },
+           
+    doTakePhoto: function() {
+        var thisController = this;
+        function onSuccess(imageData) {
+            thisController.getCarImage().setSrc("data:image/png;base64," + imageData);
+        };
+
+        function onFail(message) {
+            alert(message);
+        };
+           
+        navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            encodingType: Camera.EncodingType.PNG,
+            targetWidth: 150,
+            targetHeight: 150
+        }); 
+    },
+           
+    doSelectPhoto: function() {
+        var thisController = this;
+           
+        function onSuccess(imageData) {
+            thisController.getCarImage().setSrc("data:image/png;base64," + imageData);
+        };
+
+        function onFail(message) {
+            alert(message);
+        };
+           
+        navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            encodingType: Camera.EncodingType.PNG,
+            targetWidth: 150,
+            targetHeight: 150
+        }); 
+           
+           
+//        Ext.device.Camera.capture({
+//            success: function(image) {
+//                this.getCarImage().setSrc(image);
+//            },
+//            quality: 75,
+//            width: 150,
+//            height: 150,
+//            source: 'album'
+//        }, this, 'data', 'png', 150, 150);
     }
 });
