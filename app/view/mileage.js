@@ -16,6 +16,7 @@ Ext.define ('AutoDashMobile.view.Mileage', {
             items: [{
                 xtype: 'segmentedbutton',
                 id: 'mileageSegBtn',
+                allowDepress: false,
                 ui: 'light',
                 items: [{
                     text: 'Enter',

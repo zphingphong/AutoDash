@@ -57,11 +57,23 @@ Ext.define('AutoDashMobile.controller.Car', {
                 var length = result.rows.length;
                 for(var i = 0; i < length; i++){
                     var itm = result.rows.item(i);
+                    var carTpl = new Ext.XTemplate(
+                        '<div class="car-name">{name}</div>',
+                        '<div class="car-info">[License] {license}</div>',
+                        '<div class="car-info">[Starting Mileage] {current_mileage}</div>' //TODO: Change this to current mileage. Collects data everytimes it's added.
+                    );
                     var panel = Ext.create('Ext.Panel', {
                         id: 'car' + itm.id,
                         items: [{
+                            xtype: 'image',
+                            width: IMAGE_DIMENSION,
+                            height: IMAGE_DIMENSION,
+                            margin: '10 auto',
+                            src: itm.image
+                        }, {
                             xtype: 'panel',
-                            html: itm.name //TODO: Make it prettier
+                            data: itm,
+                            tpl: carTpl //TODO: Make it prettier
                         }, {
                             xtype: 'button',
                             text: 'Make Default', //TODO: Make it works
@@ -78,7 +90,6 @@ Ext.define('AutoDashMobile.controller.Car', {
                             handler: function() {
                                 var currentCar = carScreen.getActiveItem();
                                 carScreen.remove(currentCar, true);
-                                   
                                 DB.transaction(function(tx){
                                     tx.executeSql('DELETE FROM Cars WHERE id = ' + currentCar.getId().substring(3));
                                 }, thisController.displayError, thisController.displayCompleted);
@@ -98,12 +109,19 @@ Ext.define('AutoDashMobile.controller.Car', {
         var thisController = this;
            
         DB.transaction(function(tx){
-            tx.executeSql('INSERT INTO Cars (license, name, current_mileage, is_default) VALUES ("' + formValues.license + '", "' + formValues.name + '", ' + formValues.current_mileage + ', 1)', [], function(tx, result){
+            tx.executeSql('INSERT INTO Cars (license, name, current_mileage, image, is_default) VALUES ("' + formValues.license + '", "' + formValues.name + '", ' + formValues.current_mileage + ', "' + thisController.getCarImage().getSrc() + '", 1)', [], function(tx, result){
+                var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="car-info">[License] ' + formValues.license + '</div> <div class="car-info">[Starting Mileage] ' + formValues.current_mileage + '</div>'; //TODO: Change this to current mileage. Collects data everytimes it's added.
                 var panel = Ext.create('Ext.Panel', {
                     id: 'car' + result.insertId,
                     items: [{
+                        xtype: 'image',
+                        width: IMAGE_DIMENSION,
+                        height: IMAGE_DIMENSION,
+                        margin: '10 auto',
+                        src: thisController.getCarImage().getSrc()
+                    }, {
                         xtype: 'panel',
-                        html: formValues.name //TODO: Make it prettier
+                        html: carHtml //TODO: Make it prettier
                     }, {
                         xtype: 'button',
                         text: 'Make Default',
@@ -170,8 +188,8 @@ Ext.define('AutoDashMobile.controller.Car', {
             destinationType: Camera.DestinationType.DATA_URL,
             sourceType: Camera.PictureSourceType.CAMERA,
             encodingType: Camera.EncodingType.PNG,
-            targetWidth: 150,
-            targetHeight: 150
+            targetWidth: IMAGE_DIMENSION,
+            targetHeight: IMAGE_DIMENSION
         }); 
     },
            
@@ -190,19 +208,8 @@ Ext.define('AutoDashMobile.controller.Car', {
             destinationType: Camera.DestinationType.DATA_URL,
             sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
             encodingType: Camera.EncodingType.PNG,
-            targetWidth: 150,
-            targetHeight: 150
+            targetWidth: IMAGE_DIMENSION,
+            targetHeight: IMAGE_DIMENSION
         }); 
-           
-           
-//        Ext.device.Camera.capture({
-//            success: function(image) {
-//                this.getCarImage().setSrc(image);
-//            },
-//            quality: 75,
-//            width: 150,
-//            height: 150,
-//            source: 'album'
-//        }, this, 'data', 'png', 150, 150);
     }
 });
