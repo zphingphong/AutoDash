@@ -36,15 +36,14 @@ Ext.define('AutoDashMobile.controller.Car', {
             },
             selectPhotoCarBtn: {
                 tap: 'doSelectPhoto'
+            },
+            '#mileageScreen' : {
+               newMileageAdded: 'updateCarMileage'
             }
         }
     },
            
-    launch: function(){
-           
-        var carScreen = this.getCarScreen();
-        var thisController = this;
-           
+    launch: function(){  
         if(DB == undefined){
             DB = window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
         }
@@ -52,59 +51,7 @@ Ext.define('AutoDashMobile.controller.Car', {
             tx.executeSql('CREATE TABLE IF NOT EXISTS Cars (id INTEGER PRIMARY KEY AUTOINCREMENT, license TEXT, name TEXT NOT NULL, current_mileage INTEGER NOT NULL, image BLOB, is_default INTEGER, was_synced INTEGER DEFAULT 0)');
         }, this.displayError);
            
-        DB.transaction(function(tx){
-            tx.executeSql('SELECT * FROM Cars', [], function(tx, result){
-                var length = result.rows.length;
-                for(var i = 0; i < length; i++){
-                    var itm = result.rows.item(i);
-                    var carTpl = new Ext.XTemplate(
-                        '<div class="car-name">{name}</div>',
-                        '<div class="info-field">[License] <span class="value-field">{license}</span></div>',
-                        '<div class="info-field">[Starting Mileage] <span class="value-field">{current_mileage}</span></div>' //TODO: Change this to current mileage. Collects data everytimes it's added.
-                    );
-                    var panel = Ext.create('Ext.Panel', {
-                        id: 'car' + itm.id,
-                        scrollable: {
-                            direction: 'vertical',
-                            directionLock: true
-                        },
-                        items: [{
-                            xtype: 'image',
-                            width: IMAGE_DIMENSION,
-                            height: IMAGE_DIMENSION,
-                            margin: '10 auto',
-                            src: itm.image
-                        }, {
-                            xtype: 'panel',
-                            data: itm,
-                            tpl: carTpl //TODO: Make it prettier
-                        }, {
-                            xtype: 'button',
-                            text: 'Make Default', //TODO: Make it works
-                            iconMask: true,
-                            iconCls: 'star',
-                            margin: '10 0 0 0'
-                        }, {
-                            xtype: 'button',
-                            text: 'Delete',
-                            iconMask: true,
-                            iconCls: 'trash',
-                            ui: 'red',
-                            margin: '10 0 10 0',
-                            handler: function() {
-                                var currentCar = carScreen.getActiveItem();
-                                carScreen.remove(currentCar, true);
-                                DB.transaction(function(tx){
-                                    tx.executeSql('DELETE FROM Cars WHERE id = ' + currentCar.getId().substring(3));
-                                }, thisController.displayError, thisController.displayCompleted);
-                            }
-                        }]
-                    });
-                    carScreen.insert(i, panel);
-                    carScreen.setActiveItem(0);
-                }
-            }, thisController.displayError, thisController.displayCompleted);
-        });
+           this.refreshCarList();
     },
     
     doSave: function() {
@@ -114,7 +61,7 @@ Ext.define('AutoDashMobile.controller.Car', {
            
         DB.transaction(function(tx){
             tx.executeSql('INSERT INTO Cars (license, name, current_mileage, image, is_default) VALUES ("' + formValues.license + '", "' + formValues.name + '", ' + formValues.current_mileage + ', "' + thisController.getCarImage().getSrc() + '", 1)', [], function(tx, result){
-                var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="info-field">[License] <span class="value-field">' + formValues.license + '</span></div> <div class="info-field">[Starting Mileage] <span class="value-field">' + formValues.current_mileage + '</span></div>'; //TODO: Change this to current mileage. Collects data everytimes it's added.
+                var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="info-field">[License] <span class="value-field">' + formValues.license + '</span></div> <div class="info-field">[Current Mileage] <span class="value-field">' + formValues.current_mileage + '</span></div>';
                 var panel = Ext.create('Ext.Panel', {
                     id: 'car' + result.insertId,
                     scrollable: {
@@ -129,7 +76,7 @@ Ext.define('AutoDashMobile.controller.Car', {
                         src: thisController.getCarImage().getSrc()
                     }, {
                         xtype: 'panel',
-                        html: carHtml //TODO: Make it prettier
+                        html: carHtml
                     }, {
                         xtype: 'button',
                         text: 'Make Default',
@@ -222,5 +169,72 @@ Ext.define('AutoDashMobile.controller.Car', {
             targetWidth: IMAGE_DIMENSION,
             targetHeight: IMAGE_DIMENSION
         }); 
+    },
+           
+    refreshCarList: function() {
+        var carScreen = this.getCarScreen();
+        var thisController = this;
+           
+        DB.transaction(function(tx){
+            tx.executeSql('SELECT * FROM Cars', [], function(tx, result){
+                var length = result.rows.length;
+                for(var i = 0; i < length; i++){
+                    var itm = result.rows.item(i);
+                    var carTpl = new Ext.XTemplate(
+                        '<div class="car-name">{name}</div>',
+                        '<div class="info-field">[License] <span class="value-field">{license}</span></div>',
+                        '<div class="info-field">[Current Mileage] <span class="value-field">{current_mileage}</span></div>' //TODO: Change this to current mileage. Collects data everytimes it's added.
+                    );
+                    var panel = Ext.create('Ext.Panel', {
+                        id: 'car' + itm.id,
+                        scrollable: {
+                            direction: 'vertical',
+                            directionLock: true
+                        },
+                        items: [{
+                            xtype: 'image',
+                            width: IMAGE_DIMENSION,
+                            height: IMAGE_DIMENSION,
+                            margin: '10 auto',
+                            src: itm.image
+                        }, {
+                            xtype: 'panel',
+                            data: itm,
+                            itemId: 'carInfoPanel',
+                            tpl: carTpl //TODO: Make it prettier
+                        }, {
+                            xtype: 'button',
+                            text: 'Make Default', //TODO: Make it works
+                            iconMask: true,
+                            iconCls: 'star',
+                            margin: '10 0 0 0'
+                        }, {
+                            xtype: 'button',
+                            text: 'Delete',
+                            iconMask: true,
+                            iconCls: 'trash',
+                            ui: 'red',
+                            margin: '10 0 10 0',
+                            handler: function() {
+                                var currentCar = carScreen.getActiveItem();
+                                carScreen.remove(currentCar, true);
+                                DB.transaction(function(tx){
+                                    tx.executeSql('DELETE FROM Cars WHERE id = ' + currentCar.getId().substring(3));
+                                }, thisController.displayError, thisController.displayCompleted);
+                            }
+                        }]
+                    });
+                    carScreen.insert(i, panel);
+                    carScreen.setActiveItem(0);
+                }
+            }, thisController.displayError, thisController.displayCompleted);
+        });
+    },
+           
+    updateCarMileage: function(carId, mileage){//TODO: User real template to do this
+        var carInfoPanel = this.getCarScreen().getComponent('car' + carId).getComponent('carInfoPanel');
+        var data = carInfoPanel.getData();
+        data.current_mileage = mileage;
+        carInfoPanel.setHtml(carInfoPanel.getTpl().apply(data));
     }
 });

@@ -34,7 +34,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
             },
             '#carScreen' : {
                newCarAdded: 'updateCarList'
-            },
+            }
            
         }
     },
@@ -54,11 +54,16 @@ Ext.define('AutoDashMobile.controller.Mileage', {
         var mileageSegBtn = this.getMileageSegBtn();
            
         DB.transaction(function(tx){
+            //Insert a new mileage record
             tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", ' + formValues.car_id + ', "' + formValues.destination + '", "' + formValues.purpose + '")', [], function(tx, result){
                 thisController.doClear();
                 thisController.doView();
                 mileageSegBtn.setPressedButtons([viewBtn]);
-            }); //TODO: Fix car id
+            });
+            //Update current car mileage
+            tx.executeSql('UPDATE Cars SET current_mileage = ' + formValues.end + ' WHERE id = ' + formValues.car_id, [], function(tx, result){
+                thisController.getMileageScreen().fireEvent('newMileageAdded', formValues.car_id, formValues.end);
+            });
         }, this.displayError, this.displayCompleted);
     },
     
@@ -152,6 +157,6 @@ Ext.define('AutoDashMobile.controller.Mileage', {
                 });
                 thisController.getCarSelectionField().setStore(carStore);
             });
-        }, this.displayError);
+        });
     }
 });
