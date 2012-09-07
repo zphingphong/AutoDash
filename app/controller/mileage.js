@@ -55,6 +55,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
            
         DB.transaction(function(tx){
             tx.executeSql('INSERT INTO Mileages (start, end, date, car_id, destination, purpose) VALUES (' + formValues.start + ', ' + formValues.end + ', "' + dateStr + '", ' + formValues.car_id + ', "' + formValues.destination + '", "' + formValues.purpose + '")', [], function(tx, result){
+                thisController.doClear();
                 thisController.doView();
                 mileageSegBtn.setPressedButtons([viewBtn]);
             }); //TODO: Fix car id
@@ -69,7 +70,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
         var mileageView = this.getMileageView();
         this.getMileageScreen().setActiveItem(1);
         DB.transaction(function(tx){
-            tx.executeSql('SELECT * FROM Mileages', [], function(tx, result){ //Cannot use the regular retrieve all method because it has to put "leaf = true" to every items.
+            tx.executeSql('SELECT Mileages.start, Mileages.end, Mileages.date, Mileages.destination, Mileages.purpose, Cars.current_mileage, Cars.name AS car_name FROM Mileages INNER JOIN Cars ON Mileages.car_id = Cars.id', [], function(tx, result){ //Cannot use the regular retrieve all method because it has to put "leaf = true" to every items.
                 var rootObj = {};
                 var mileagesArray = [];
                 var length = result.rows.length;

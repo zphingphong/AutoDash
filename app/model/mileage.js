@@ -7,6 +7,8 @@ Ext.define('AutoDashMobile.model.Mileage', {
             {name: 'end', type: 'int'},
             {name: 'start', type: 'int'},
             {name: 'car_id', type: 'int'},
+            {name: 'car_name', type: 'string'},
+            {name: 'current_mileage', type: 'int'},
             {name: 'destination', type: 'string'},
             {name: 'purpose', type: 'string'}
         ]

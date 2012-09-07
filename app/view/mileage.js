@@ -106,7 +106,16 @@ Ext.define ('AutoDashMobile.view.Mileage', {
             listeners: {
                 leafitemtap: function(nestedList, list, index, target, record) {
                     var detailCard = nestedList.getDetailCard();
-                    detailCard.setHtml('Date/Time: ' + record.get('date') + '<br /> Start Mileage: ' + record.get('start') + '<br /> End Mileage: ' + record.get('end') + '<br /> Destination: ' + record.get('destination') + '<br /> Purpose: ' + record.get('purpose'));
+                    var mileageTpl = new Ext.XTemplate(
+                        '<div class="car-name">{car_name}</div>',
+                        '<div class="info-field">[Start Mileage] <span class="value-field">{start}</span></div>',
+                        '<div class="info-field">[End Mileage] <span class="value-field">{end}</span></div>',
+                        '<div class="info-field">[Current Mileage] <span class="value-field">{current_mileage}</span></div>',
+                        '<div class="info-field">[Date] <span class="value-field">{date}</span></div>',
+                        '<div class="info-field">[Destination] <span class="value-field">{destination}</span></div>',
+                        '<div class="info-field">[Purpose] <span class="value-field">{purpose}</span></div>'
+                    );
+                    detailCard.setHtml(mileageTpl.apply(record.getData()));
                 }
             }
         }]

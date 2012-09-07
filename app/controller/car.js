@@ -59,8 +59,8 @@ Ext.define('AutoDashMobile.controller.Car', {
                     var itm = result.rows.item(i);
                     var carTpl = new Ext.XTemplate(
                         '<div class="car-name">{name}</div>',
-                        '<div class="car-info">[License] {license}</div>',
-                        '<div class="car-info">[Starting Mileage] {current_mileage}</div>' //TODO: Change this to current mileage. Collects data everytimes it's added.
+                        '<div class="info-field">[License] <span class="value-field">{license}</span></div>',
+                        '<div class="info-field">[Starting Mileage] <span class="value-field">{current_mileage}</span></div>' //TODO: Change this to current mileage. Collects data everytimes it's added.
                     );
                     var panel = Ext.create('Ext.Panel', {
                         id: 'car' + itm.id,
@@ -114,7 +114,7 @@ Ext.define('AutoDashMobile.controller.Car', {
            
         DB.transaction(function(tx){
             tx.executeSql('INSERT INTO Cars (license, name, current_mileage, image, is_default) VALUES ("' + formValues.license + '", "' + formValues.name + '", ' + formValues.current_mileage + ', "' + thisController.getCarImage().getSrc() + '", 1)', [], function(tx, result){
-                var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="car-info">[License] ' + formValues.license + '</div> <div class="car-info">[Starting Mileage] ' + formValues.current_mileage + '</div>'; //TODO: Change this to current mileage. Collects data everytimes it's added.
+                var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="info-field">[License] <span class="value-field">' + formValues.license + '</span></div> <div class="info-field">[Starting Mileage] <span class="value-field">' + formValues.current_mileage + '</span></div>'; //TODO: Change this to current mileage. Collects data everytimes it's added.
                 var panel = Ext.create('Ext.Panel', {
                     id: 'car' + result.insertId,
                     scrollable: {
