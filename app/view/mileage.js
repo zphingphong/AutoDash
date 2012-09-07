@@ -95,7 +95,11 @@ Ext.define ('AutoDashMobile.view.Mileage', {
         }, {
             xtype: 'nestedlist',
             id: 'mileageView',
-            displayField: 'date',
+            listConfig: {
+                itemTpl: new Ext.XTemplate(
+                    '<span>{car_name}</span> <span class="info-field">{destination}</span> <span>{date}</span>'
+                )
+            },
             title: 'Mileage History',
             backButton: {
                 ui: 'back'
