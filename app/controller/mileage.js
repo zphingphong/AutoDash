@@ -109,6 +109,7 @@ Ext.define('AutoDashMobile.controller.Mileage', {
     },
            
     doSync: function(){ //TODO: this should be global
+        var thisController = this;
         DB.transaction(function(tx){
             tx.executeSql('SELECT start, end, date FROM Mileages', [], function(tx, result){
                 var allPhoneMileage = [];
@@ -118,26 +119,27 @@ Ext.define('AutoDashMobile.controller.Mileage', {
                     allPhoneMileage[i] = itm;
                 }
                           
-            Ext.Ajax.request({
-                url: 'http://192.168.0.40:3000/mileages/sync_mileage.json', //TODO: Use http://70.79.15.18:3000/
-                method: 'POST',
-                headers: {
-                    'X-CSRF-Token': 'meta[name="csrf-token"]' //TODO: Fix this somehow
-                },
-                scope: this,
-                params: {
-                    data: Ext.JSON.encode(allPhoneMileage)
-                },
-                success: function(response) {
-                    console.log(response.responseText);
-                },
-                failure: function(response) {
-                    alert(response.responseText);
-                }
-            });
+                Ext.Ajax.request({
+                    url: 'http://172.16.99.226:3000/mileages/sync_mileage.json', //TODO: Use http://70.79.15.18:3000/
+                    method: 'POST',
+    //                headers: {
+    //                    'X-CSRF-Token': 'meta[name="csrf-token"]' //TODO: Fix this somehow
+    //                },
+    //                scope: this,
+                    params: {
+                        data: Ext.JSON.encode(allPhoneMileage)
+                    },
+                    success: function(response) {
+                        alert('Completed');
+    //                    console.log(response.responseText);
+                    },
+                    failure: function(response) {
+                        alert(response);
+                    }
+                });
                           
-            }.bind(this), this.displayError, this.displayCompleted);
-        }.bind(this));
+            }, thisController.displayError, thisController.displayCompleted);
+        });
     },
            
     updateCarList: function(){

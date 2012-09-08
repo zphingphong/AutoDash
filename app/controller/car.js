@@ -66,7 +66,6 @@ Ext.define('AutoDashMobile.controller.Car', {
                     '<div class="info-field">[License] <span class="value-field">{license}</span></div>',
                     '<div class="info-field">[Current Mileage] <span class="value-field">{current_mileage}</span></div>' //TODO: Change this to current mileage. Collects data everytimes it's added.
                 );
-//                var carHtml = '<div class="car-name">' + formValues.name + '</div> <div class="info-field">[License] <span class="value-field">' + formValues.license + '</span></div> <div class="info-field">[Current Mileage] <span class="value-field">' + formValues.current_mileage + '</span></div>';
                 var panel = Ext.create('Ext.Panel', {
                     id: 'car' + result.insertId,
                     scrollable: {
@@ -82,7 +81,6 @@ Ext.define('AutoDashMobile.controller.Car', {
                     }, {
                         xtype: 'panel',
                         data: formValues,
-//                        html: carHtml
                         itemId: 'carInfoPanel',
                         tpl: carTpl
                     }, {
